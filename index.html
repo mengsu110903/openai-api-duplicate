@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Campus AI - Intelligent assistant for campus queries and support">
+  <title>Campus AI | Intelligent Campus Assistant</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-title">
+          <div class="logo-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+          <h1>Campus<span>AI</span></h1>
+        </div>
+        <p class="sidebar-subtitle">Your intelligent campus assistant</p>
+      </div>
+
+      <button id="newChat" class="btn-primary">
+        <i class="fas fa-plus"></i>
+        New Chat
+      </button>
+
+      <div class="history-section">
+        <div class="section-header">
+          <h3><i class="fas fa-history"></i> Recent Chats</h3>
+          <button class="icon-btn" id="clearHistory" title="Clear history">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+        <div class="history-list" id="chatHistory">
+          <!-- History items will be dynamically inserted here -->
+          <div class="history-empty">
+            <i class="fas fa-comments"></i>
+            <p>No chat history yet</p>
+            <small>Start a new conversation to see it here</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="avatar">
+            <i class="fas fa-user-graduate"></i>
+          </div>
+          <div class="user-info">
+            <strong>Student User</strong>
+            <small>@campus.student</small>
+          </div>
+        </div>
+        <button class="icon-btn" id="settingsBtn" title="Settings">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Chat -->
+    <main class="chat">
+      <!-- Chat Header -->
+      <header class="chat-header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="current-chat-info">
+            <h2>Welcome to Campus AI</h2>
+            <p class="chat-subtitle">Ask me anything about campus life, courses, schedules, and more</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn" id="themeToggle" title="Toggle theme">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="icon-btn" id="helpBtn" title="Help">
+            <i class="fas fa-question-circle"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Welcome Screen -->
+      <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-content">
+          <div class="welcome-icon">
+            <i class="fas fa-university"></i>
+          </div>
+          <h1>How can I help you today?</h1>
+          <p class="welcome-text">I'm your Campus AI assistant. I can help with course information, campus navigation, schedule queries, and more.</p>
+          
+          <div class="quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="action-grid">
+              <button class="action-card" data-prompt="What's on my schedule today?">
+                <i class="fas fa-calendar-day"></i>
+                <span>Today's Schedule</span>
+              </button>
+              <button class="action-card" data-prompt="Where is the library located?">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Campus Map</span>
+              </button>
+              <button class="action-card" data-prompt="Show me my grades">
+                <i class="fas fa-chart-line"></i>
+                <span>Check Grades</span>
+              </button>
+              <button class="action-card" data-prompt="Upcoming campus events">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Campus Events</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="suggestions">
+            <h3>Try asking...</h3>
+            <div class="suggestion-chips">
+              <button class="suggestion-chip" data-prompt="When is the next bus to downtown?">
+                <i class="fas fa-bus"></i>
+                Campus shuttle schedule
+              </button>
+              <button class="suggestion-chip" data-prompt="What are the library hours?">
+                <i class="fas fa-clock"></i>
+                Library hours
+              </button>
+              <button class="suggestion-chip" data-prompt="How do I register for next semester?">
+                <i class="fas fa-clipboard-list"></i>
+                Course registration
+              </button>
+              <button class="suggestion-chip" data-prompt="Where can I find tutoring services?">
+                <i class="fas fa-chalkboard-teacher"></i>
+                Tutoring services
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Messages Container -->
+      <div class="messages-container" id="messagesContainer">
+        <div class="messages" id="messages">
+          <!-- Messages will be dynamically inserted here -->
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-area">
+        <div class="input-wrapper">
+          <div class="input-icons">
+            <button class="input-icon" id="attachBtn" title="Attach file">
+              <i class="fas fa-paperclip"></i>
+            </button>
+            <button class="input-icon" id="voiceBtn" title="Voice input">
+              <i class="fas fa-microphone"></i>
+            </button>
+          </div>
+          <input 
+            type="text" 
+            id="userInput" 
+            placeholder="Ask about campus life, courses, schedules..." 
+            autocomplete="off"
+          />
+          <div class="input-actions">
+            <button class="input-icon" id="emojiBtn" title="Insert emoji">
+              <i class="far fa-smile"></i>
+            </button>
+            <button id="sendBtn" class="btn-primary send-btn">
+              <i class="fas fa-paper-plane"></i>
+              <span class="btn-text">Send</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="input-footer">
+          <p class="disclaimer">
+            <i class="fas fa-info-circle"></i>
+            Campus AI can make mistakes. Verify important information with official sources.
+          </p>
+          <div class="model-info">
+            <span class="model-badge">
+              <i class="fas fa-brain"></i>
+              Campus AI v2.1
+            </span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal" id="settingsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-cog"></i> Settings</h2>
+        <button class="modal-close" id="closeSettings">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-item">
+          <label for="themeSelect">Theme</label>
+          <select id="themeSelect">
+            <option value="auto">Auto (System)</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <label for="fontSize">Font Size</label>
+          <select id="fontSize">
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <label class="switch">
+            <input type="checkbox" id="autoSave">
+            <span class="slider"></span>
+            Auto-save chats
+          </label>
+        </div>
+        <div class="setting-item">
+          <label class="switch">
+            <input type="checkbox" id="typingIndicator" checked>
+            <span class="slider"></span>
+            Show typing indicator
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="resetSettings">Reset to Default</button>
+        <button class="btn-primary" id="saveSettings">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Modal -->
+  <div class="modal" id="helpModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-question-circle"></i> Help & Support</h2>
+        <button class="modal-close" id="closeHelp">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="help-section">
+          <h3><i class="fas fa-comments"></i> How to use Campus AI</h3>
+          <p>Campus AI can assist you with various campus-related queries:</p>
+          <ul>
+            <li><strong>Course Information:</strong> Ask about classes, professors, syllabi</li>
+            <li><strong>Schedule:</strong> Check your daily/weekly schedule</li>
+            <li><strong>Campus Navigation:</strong> Find buildings, rooms, facilities</li>
+            <li><strong>Events:</strong> Learn about upcoming campus events</li>
+            <li><strong>Resources:</strong> Access library, tutoring, counseling services</li>
+          </ul>
+        </div>
+        <div class="help-section">
+          <h3><i class="fas fa-headset"></i> Contact Support</h3>
+          <p>For technical issues or questions:</p>
+          <p>Email: support@campusai.edu</p>
+          <p>Phone: (555) 123-4567</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div class="typing-indicator" id="typingIndicator">
+    <div class="typing-dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <p>Campus AI is thinking...</p>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
